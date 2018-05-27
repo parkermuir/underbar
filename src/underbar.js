@@ -318,6 +318,10 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+
+    _.each(argArray, function(arg) {
+      func(arg);
+    });
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -326,7 +330,15 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
+  
+  
   _.delay = function(func, wait) {
+    var argArr = Array.from(arguments).slice(2);
+
+    setTimeout(function() {
+      func.apply(null, argArr);
+    }, wait)
+
   };
 
 
