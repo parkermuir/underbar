@@ -318,10 +318,23 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    //call a function only once for a given arguments list "oncePerUniqueArgumentList"
+    //object that has both arguments used and results to check if arguments have been passed before
+    
+    var result;
+    var resultsObj = {}
 
-    _.each(argArray, function(arg) {
-      func(arg);
-    });
+    return function() {
+      var args = Array.prototype.join.call(arguments, '-');
+      if (resultsObj.hasOwnProperty(args)) {
+        //return results from results obj
+        return resultsObj[args];
+      } else {
+        result = func.apply(this, arguments);
+        resultsObj[args] = result;
+        return result;
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
