@@ -105,13 +105,34 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     var uniques = [];
+    var mappedUniques =[];
+    
+    if (iterator !== undefined) {
+      var mappedInput = array.map(function(val) {
+        return iterator(val);
+      })
 
-      _.each(array, function(val) {
+      _.each(mappedInput, function(val, i) {
+        if (_.indexOf(mappedUniques, val) === -1) {
+          mappedUniques.push(val);
+          uniques.push(array[i]);
+        }
+      })
+    } else if (isSorted) {
+        uniques.push(array[0]);
+        for (var i = 1; i < array.length; i++) {
+          if (array[i] !== array[i - 1]) {
+            uniques.push(array[i]);
+          }
+        }
+    } else {
+       _.each(array, function(val) {
         if (_.indexOf(uniques, val) === -1) {
           uniques.push(val)
         }
-      })
-      return uniques;
+      });
+    }
+    return uniques;
   };
 
 
